@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -72,3 +73,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 =======
 # Zoom-BMP-Picture-Processing-Application
 >>>>>>> c2191f0537ff43d285982a5c13e38d23c44d86b4
+=======
+# Zoom-BMP-Picture-Processing-Application
+>>>>>>> 1c5fc08cbc66266a95275c05f1735d28aab0ded2
