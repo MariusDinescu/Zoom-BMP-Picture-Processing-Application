@@ -1,4 +1,5 @@
 Project Description
+
 This project involves creating a system that processes large BMP images using Docker containers. The architecture consists of 6 Docker containers connected through a network bridge for efficient communication. Each container plays a specific role in handling the image zooming and system monitoring tasks.
 
 Frontend (React): The frontend is built with React. It allows users to load a BMP image and specify zoom parameter. The frontend communicates with the backend through a REST API.
