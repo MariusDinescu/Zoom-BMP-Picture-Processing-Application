@@ -1,78 +1,20 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Getting Started with Create React App
+Zoom BMP Picture Processing Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project involves the development of a system that handles zooming in and out of BMP images using a microservices architecture spread across six Docker containers. Each container serves a specific purpose in processing and managing the BMP image and associated system data.
 
-## Available Scripts
+Architecture Overview:
 
-In the project directory, you can run:
+Frontend: The frontend (developed using JavaScript, Angular, Vue.js, or React) allows users to upload BMP images and specify zoom parameters (e.g., +/- %). The frontend communicates with the backend via a REST API.
 
-### `npm start`
+Container 01 (C01): A Java Javalin or Jakarta EE Servlet REST API, which receives the image and parameters from the frontend. This container also acts as a JMS client, publishing the image as a binary message to a JMS topic.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Container 02 (C02): An Apache TomEE 10 container running a JMS broker that manages the topic and queues for message passing.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Container 03 (C03): A Jakarta EE EJB Message-Driven Bean (MDB) subscribed to the JMS topic. It also functions as a Java RMI client, interfacing with two Java RMI server objects located in containers 04 and 05.
 
-### `npm test`
+Containers 04 & 05 (C04, C05): These containers each run an Apache TomEE 10 instance with RMI server objects, which work together with container C03 to process the image.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Container 06 (C06): A Node.js REST API container hosting two databases—MongoDB and MySQL. The MongoDB stores SNMP data (e.g., OS name, CPU and RAM usage), and the MySQL database stores the zoomed BMP image as a binary large object (BLOB). The Node.js API exposes two REST endpoints: one for SNMP data and one for rendering the BMP picture.
 
-### `npm run build`
+Once the image has been processed and stored in the MySQL database, the frontend is notified via a REST API/WebSocket call from Container 01, redirecting the user to the Node.js URL to download the processed image.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# Zoom-BMP-Picture-Processing-Application
->>>>>>> c2191f0537ff43d285982a5c13e38d23c44d86b4
-=======
-# Zoom-BMP-Picture-Processing-Application
->>>>>>> 1c5fc08cbc66266a95275c05f1735d28aab0ded2
