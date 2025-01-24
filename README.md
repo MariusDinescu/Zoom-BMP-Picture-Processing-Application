@@ -1,20 +1,17 @@
-Zoom BMP Picture Processing Application
+Project Description
+This project involves creating a system that processes large BMP images using Docker containers. The architecture consists of 6 Docker containers connected through a network bridge for efficient communication. Each container plays a specific role in handling the image zooming and system monitoring tasks.
 
-This project involves the development of a system that handles zooming in and out of BMP images using a microservices architecture spread across six Docker containers. Each container serves a specific purpose in processing and managing the BMP image and associated system data.
+Frontend (React): The frontend is built with React. It allows users to load a BMP image and specify zoom parameter. The frontend communicates with the backend through a REST API.
 
-Architecture Overview:
+Container 1 (C01): This container runs Java (Javalin/Apache Tomcat 10). It handles the initial image processing and sends the image data via REST API to the next container. It also acts as a JMS Client Publisher to send a binary message to the JMS Topic.
 
-Frontend: The frontend (developed using JavaScript, Angular, Vue.js, or React) allows users to upload BMP images and specify zoom parameters (e.g., +/- %). The frontend communicates with the backend via a REST API.
+Container 2 (C02): This container uses Apache TomEE 10 with an ActiveMQ JMS broker. It receives the image data from C01 and publishes it to a JMS Topic.
 
-Container 01 (C01): A Java Javalin or Jakarta EE Servlet REST API, which receives the image and parameters from the frontend. This container also acts as a JMS client, publishing the image as a binary message to a JMS topic.
+Container 3 (C03): C03 is responsible for subscribing to the JMS Topic, where it processes the image data. It acts as an EJB Client MDB and also as a Java RMI client, communicating with RMI Servers (C04 and C05). It divides the image into two parts, processes them, and then reconstructs the image.
 
-Container 02 (C02): An Apache TomEE 10 container running a JMS broker that manages the topic and queues for message passing.
+Container 4 and 5 (C04, C05): These containers are Apache TomEE 10 with RMI Server objects. They handle the image processing tasks by working with the image parts sent by C03.
 
-Container 03 (C03): A Jakarta EE EJB Message-Driven Bean (MDB) subscribed to the JMS topic. It also functions as a Java RMI client, interfacing with two Java RMI server objects located in containers 04 and 05.
+Container 6 (C06): C06 runs a Node.js server with both MongoDB and MySQL databases. The container stores the processed BMP image as a BLOB in MySQL and stores system data (RAM, CPU usage) in MongoDB. It also exposes two REST API endpoints: one for accessing the database and another for rendering the processed BMP picture. C06 communicates with C03 and notifies when the image is ready. It also collects system data from the other containers via SNMP and stores this information in MongoDB.
 
-Containers 04 & 05 (C04, C05): These containers each run an Apache TomEE 10 instance with RMI server objects, which work together with container C03 to process the image.
-
-Container 06 (C06): A Node.js REST API container hosting two databases—MongoDB and MySQL. The MongoDB stores SNMP data (e.g., OS name, CPU and RAM usage), and the MySQL database stores the zoomed BMP image as a binary large object (BLOB). The Node.js API exposes two REST endpoints: one for SNMP data and one for rendering the BMP picture.
-
-Once the image has been processed and stored in the MySQL database, the frontend is notified via a REST API/WebSocket call from Container 01, redirecting the user to the Node.js URL to download the processed image.
+All containers are part of a network bridge, making communication between them easier.
 
